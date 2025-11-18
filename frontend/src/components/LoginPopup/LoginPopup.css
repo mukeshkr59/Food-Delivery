@@ -49,6 +49,13 @@
     border: none;
     border-radius: 4px;
     font-size: 15px;
+    cursor: pointer;
+}
+/* .login-popup-container button:hover{
+    scale: 102%;
+} */
+.login-popup-container button:active{
+    scale: 97%;
 }
 .login-popup-condition{
     display: flex;
@@ -63,4 +70,7 @@
     cursor: pointer;
     font-weight: 500;
     color: tomato;
+}
+.span span:active{
+    color: rgb(84, 84, 237);
 }

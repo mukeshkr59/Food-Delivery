@@ -42,6 +42,14 @@
     background-color: gray;
     border: none;
 }
+
+.footer-content-center li:hover{
+    color: rgb(255, 126, 104);
+}
+.footer-content-right li:hover{
+    color: rgb(255, 126, 104);
+}
+
 @media(max-width:750px) {
     .footer-content{
         display: flex;
