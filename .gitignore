@@ -1,0 +1,31 @@
+# Node
+node_modules/
+.DS_Store
+.env
+*.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# build
+dist/
+build/
+
+# uploads
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+desktop.ini
+
+# local envs
+/backend/.env
+/frontend/.env
