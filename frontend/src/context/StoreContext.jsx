@@ -6,16 +6,33 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const url = "http://localhost:4000";
+  // read initial token first so we can load the correct cart storage key
+  const initialToken = localStorage.getItem("token") || "";
+
+  const getUserIdFromToken = (t) => {
+    try {
+      if (!t) return null;
+      const payload = t.split(".")[1];
+      const decoded = JSON.parse(atob(payload));
+      return decoded?.id || decoded?.userId || null;
+    } catch {
+      return null;
+    }
+  };
+
+  const [token, setToken] = useState(() => initialToken);
 
   const [cartItem, setCartItem] = useState(() => {
     try {
-      const raw = localStorage.getItem("cartItem");
+      const uid = getUserIdFromToken(initialToken);
+      const key = uid ? `cartItem_user_${uid}` : `cartItem_guest`;
+      const raw = localStorage.getItem(key);
       return raw ? JSON.parse(raw) : {};
     } catch {
       return {};
     }
   });
-  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+
   const [food_list, setFoodList] = useState([]);
 
   const fetchFoodList = async () => {
@@ -92,14 +109,16 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // persist cart locally so items survive page refresh
+  // persist cart to a per-user or guest key so different users have separate carts
   useEffect(() => {
     try {
-      localStorage.setItem("cartItem", JSON.stringify(cartItem));
+      const uid = getUserIdFromToken(token);
+      const key = uid ? `cartItem_user_${uid}` : `cartItem_guest`;
+      localStorage.setItem(key, JSON.stringify(cartItem));
     } catch (e) {
       console.error("failed to persist cartItem", e);
     }
-  }, [cartItem]);
+  }, [cartItem, token]);
 
   // keep token in sync with localStorage so UI reflects logged-in state on reload
   useEffect(() => {
@@ -110,9 +129,18 @@ const StoreContextProvider = (props) => {
       await fetchFoodList();
       if (token) {
         localStorage.setItem("token", token);
-        await loadCartData(localStorage.getItem("token"));
+        // fetch server cart and replace local cart with server cart for this user
+        await loadCartData(token);
       } else {
+        // on logout: remove token and show guest cart (or empty)
         localStorage.removeItem("token");
+        try {
+        //   const raw = localStorage.getItem("cartItem_guest");
+        //   setCartItem(raw ? JSON.parse(raw) : {});
+          setCartItem( {});
+        } catch {
+          setCartItem({});
+        }
       }
     }
     loadData();

@@ -14,6 +14,7 @@ const Navbar = ({setShowLoginPopup}) => {
 
     const logout = ()=>{
         localStorage.removeItem("token");
+        localStorage.removeItem("cartItem");
         setToken("")
         navigate("/")
     }
