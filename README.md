@@ -133,10 +133,3 @@ All authenticated endpoints expect `token` header containing the user's JWT.
 
 ---
 
-If you want, I can:
-
-- Add a small `SEED.md` and a script to seed food items into Atlas.
-- Add a `/verify` frontend page to handle Stripe redirects (success/cancel) and call a `POST /api/order/confirm` endpoint to finalize orders.
-- Add a short `DEVELOPMENT.md` for environment setup per-OS.
-
-Thanks — let me know if you want the README adjusted (tone, more details, or extra sections).
