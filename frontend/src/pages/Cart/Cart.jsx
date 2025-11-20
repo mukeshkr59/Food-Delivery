@@ -5,9 +5,17 @@ import { useNavigate } from "react-router-dom";
 // import { assets } from '../../assets/assets'
 
 const Cart = () => {
-  const { cartItem, food_list, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
+  const { cartItem, food_list, removeFromCart, getTotalCartAmount, url, token } = useContext(StoreContext);
 
   const navigate = useNavigate();
+  const verifyLogin = async ()=>{
+    if (token) {
+      navigate('/orders');
+    }else{
+      alert("Login to Checkout");
+    }
+  }
+
   return (
     <div className="cart">
       <div className="cart-items">
@@ -61,7 +69,7 @@ const Cart = () => {
               <b>${getTotalCartAmount()===0?0:getTotalCartAmount()+2} </b>
             </div>
           </div>
-          <button onClick={()=>navigate('/orders')}>Proceed to checkout</button>
+          <button onClick={verifyLogin}>Proceed to checkout</button>
         </div>
         <div className="cart-promocode">
           <div>
