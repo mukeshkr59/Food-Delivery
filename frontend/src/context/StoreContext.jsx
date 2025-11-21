@@ -5,7 +5,7 @@ import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const url = "http://localhost:4000";
+  const url = "https://food-delivery-backend-vspi.onrender.com/";
   // read initial token first so we can load the correct cart storage key
   const initialToken = localStorage.getItem("token") || "";
 
