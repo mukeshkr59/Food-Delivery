@@ -50,7 +50,7 @@ const StoreContextProvider = (props) => {
       await axios.post(
         url + "/api/cart/add",
         { itemId },
-        { headers: { token } }
+        { headers: { token } },
       );
     }
   };
@@ -74,7 +74,7 @@ const StoreContextProvider = (props) => {
         await axios.post(
           url + "/api/cart/remove",
           { itemId },
-          { headers: { token } }
+          { headers: { token } },
         );
       } catch (err) {
         console.error("removeFromCart failed", err);
@@ -99,7 +99,7 @@ const StoreContextProvider = (props) => {
       const response = await axios.post(
         url + "/api/cart/get",
         {},
-        { headers: { token } }
+        { headers: { token } },
       );
       if (response?.data?.success) {
         setCartItem(response.data.cartData || {});
@@ -120,13 +120,16 @@ const StoreContextProvider = (props) => {
     }
   }, [cartItem, token]);
 
+  useEffect(() => {
+    fetchFoodList();
+  }, []);
+
   // keep token in sync with localStorage so UI reflects logged-in state on reload
   useEffect(() => {
     // if(token) localStorage.setItem('token', token);
     // else localStorage.removeItem('token');
 
     async function loadData() {
-      await fetchFoodList();
       if (token) {
         localStorage.setItem("token", token);
         // fetch server cart and replace local cart with server cart for this user
@@ -135,9 +138,9 @@ const StoreContextProvider = (props) => {
         // on logout: remove token and show guest cart (or empty)
         localStorage.removeItem("token");
         try {
-        //   const raw = localStorage.getItem("cartItem_guest");
-        //   setCartItem(raw ? JSON.parse(raw) : {});
-          setCartItem( {});
+          //   const raw = localStorage.getItem("cartItem_guest");
+          //   setCartItem(raw ? JSON.parse(raw) : {});
+          setCartItem({});
         } catch {
           setCartItem({});
         }
